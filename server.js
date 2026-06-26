@@ -1,17 +1,20 @@
 import express from 'express';
 import Groq from 'groq-sdk';
 import 'dotenv/config';
+import cors from "cors";
 
 const app = express();
 app.use(express.json());
 app.use(express.static('public'));
+
 app.use(cors({
     origin: [
         "https://takunda.vito.co.zw",
         "http://localhost:5500"
-    ]
+    ],
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type"]
 }));
-
 // Groq SDK picks up GROQ_API_KEY from .env automatically
 const groq = new Groq();
 // cost SYSTEM_PROMPT = `You are a helpful assistant on Takunda Vito's 
@@ -377,4 +380,9 @@ app.post('/api/chat', async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log('Server running on port 3000'));
+// app.listen(3000, () => console.log('Server running on port 3000'));
+// const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+});
