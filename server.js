@@ -5,6 +5,12 @@ import 'dotenv/config';
 const app = express();
 app.use(express.json());
 app.use(express.static('public'));
+app.use(cors({
+    origin: [
+        "https://takunda.vito.co.zw",
+        "http://localhost:5500"
+    ]
+}));
 
 // Groq SDK picks up GROQ_API_KEY from .env automatically
 const groq = new Groq();
@@ -344,6 +350,8 @@ Visitors should leave the conversation feeling like they spoke with an experienc
 Your responses should feel intelligent, calm, helpful and trustworthy.
 
 Always optimize for honesty, usefulness and clarity.`;
+
+
 
 app.post('/api/chat', async (req, res) => {
   const { messages } = req.body;
