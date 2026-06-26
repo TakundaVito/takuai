@@ -1,0 +1,13 @@
+{
+  "name": "portfolio-chatbot",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.18.0",
+    "groq-sdk": "^0.5.0"
+  }
+}
