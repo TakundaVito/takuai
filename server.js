@@ -1,28 +1,29 @@
 import express from 'express';
 import cors from "cors";
-
 import Groq from 'groq-sdk';
 import 'dotenv/config';
 
 const app = express();
+const PORT = process.env.PORT || 3000; // ← was missing, caused crash
+
 app.use(express.json());
 app.use(express.static('public'));
 
 app.use(cors({
     origin: [
-        "https://takunda.vito.co.zw",
-        "http://localhost:5500"
+        "https://takunda.vito.co.zw",    // your main domain
+        "https://takuai-1.onrender.com", // Render self-origin
+        "http://localhost:3000",          // local dev (portfolio app)
+        "http://localhost:5500",          // live server / VS Code
+        // Add your portfolio's Render URL here too if deployed separately:
+        // "https://your-portfolio-app.onrender.com",
     ],
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"]
 }));
-// Groq SDK picks up GROQ_API_KEY from .env automatically
+
 const groq = new Groq();
-// cost SYSTEM_PROMPT = `You are a helpful assistant on Takunda Vito's 
-// portfolio site. He is a Mechatronics Engineer specialising in AI, 
-// embedded systems, IoT and automation. Help visitors learn about his 
-// projects and skills. Keep replies concise and friendly`
-// Personalise this for your portfolio
+
 const SYSTEM_PROMPT = `You are Taku, the AI assistant for Takunda Vito.
 
 Your job is to represent Takunda professionally and accurately while having natural, engaging conversations with visitors to his portfolio website.
@@ -355,8 +356,6 @@ Your responses should feel intelligent, calm, helpful and trustworthy.
 
 Always optimize for honesty, usefulness and clarity.`;
 
-
-
 app.post('/api/chat', async (req, res) => {
   const { messages } = req.body;
 
@@ -380,9 +379,6 @@ app.post('/api/chat', async (req, res) => {
     res.status(500).json({ error: 'Failed to get response' });
   }
 });
-
-// app.listen(3000, () => console.log('Server running on port 3000'));
-// const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
